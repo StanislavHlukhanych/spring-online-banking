@@ -47,6 +47,11 @@ public class UserService implements UserDetailsService {
         return jwtUtil.generateToken(authentication);
     }
 
+    public User getUser(UserDetails userDetails) {
+        return userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)

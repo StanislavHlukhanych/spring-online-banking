@@ -10,24 +10,30 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "users")
-public class User implements Serializable {
+@Table(name = "cards")
+public class Card implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private String cardNumber;
+
+    @Column(unique = true, nullable = false)
+    private Date expiryDate;
+
+    @Column(unique = true, nullable = false)
+    private String cvv;
+
+    @Column(unique = true, nullable = false)
+    private String pin;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private Double balance = 0.0;
 
     @Column(nullable = false)
     @CreationTimestamp

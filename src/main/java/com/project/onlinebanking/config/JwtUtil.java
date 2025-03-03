@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private static final String secret = generateSecretKey();
+    private static final String secret = "lkn8lk1nd6kn4ew2jdv4kn2we23fjk34qev5iph6qpm903u4lf2edf";
     private static final long expiration_time = 864000000; // 10 days
 
     private static String generateSecretKey() {
