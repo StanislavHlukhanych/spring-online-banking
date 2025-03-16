@@ -1,4 +1,4 @@
-package com.project.onlinebanking.entity;
+package com.project.onlinebanking.model;
 
 public enum Role {
     USER,

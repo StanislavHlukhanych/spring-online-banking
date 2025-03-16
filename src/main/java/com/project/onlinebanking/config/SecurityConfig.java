@@ -22,7 +22,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/register", "/transaction/top-up").permitAll()
+                        .requestMatchers("/auth/login", "/auth/register",
+                                "/transaction/top-up", "/atm/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationConfig)

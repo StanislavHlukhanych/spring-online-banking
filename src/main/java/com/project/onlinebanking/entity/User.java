@@ -1,5 +1,6 @@
 package com.project.onlinebanking.entity;
 
+import com.project.onlinebanking.model.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
