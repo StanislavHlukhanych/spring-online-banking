@@ -1,6 +1,7 @@
 package com.project.onlinebanking.service;
 
 import com.project.onlinebanking.config.JwtUtil;
+import com.project.onlinebanking.exception.UserAlreadyExist;
 import com.project.onlinebanking.model.Role;
 import com.project.onlinebanking.entity.User;
 import com.project.onlinebanking.impl.UserDetailsImpl;
@@ -25,10 +26,15 @@ public class UserService implements UserDetailsService {
 
     public User signUp(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new UserAlreadyExist("Email already exists");
         }
+
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Username already exists");
+            throw new UserAlreadyExist("Username already exists");
+        }
+
+        if (password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
         }
 
         User user = new User();
@@ -47,9 +53,17 @@ public class UserService implements UserDetailsService {
         return jwtUtil.generateToken(authentication);
     }
 
-    public User getUser(UserDetails userDetails) {
-        return userRepository.findByUsername(userDetails.getUsername())
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public void changePassword(User user, String password) {
+        if (password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     @Override

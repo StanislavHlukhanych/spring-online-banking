@@ -1,6 +1,8 @@
 package com.project.onlinebanking.service;
 
 import com.project.onlinebanking.entity.*;
+import com.project.onlinebanking.exception.InvalidAmountException;
+import com.project.onlinebanking.exception.ResourceNotFoundException;
 import com.project.onlinebanking.repository.AutomaticTellerMachineRepository;
 import com.project.onlinebanking.repository.CardRepository;
 import com.project.onlinebanking.repository.TransactionRepository;
@@ -17,10 +19,16 @@ public class TransactionService {
     private final AutomaticTellerMachineRepository automaticTellerMachineRepository;
 
     public Transaction replenishmentOfCardAccount(String atmNumber, String cardNumber, double amount) {
-        Transaction transaction = new Transaction();
         AutomaticTellerMachine atm = automaticTellerMachineRepository.findByNumber(atmNumber)
-                .orElseThrow(() -> new RuntimeException("ATM not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("ATM not found"));
+        if (amount <= 5) {
+            throw new InvalidAmountException("Amount must be greater than 5");
+        }
         Card card = cardRepository.findByCardNumber(cardNumber);
+        if (card == null) {
+            throw new ResourceNotFoundException("Card not found");
+        }
+        Transaction transaction = new Transaction();
         User userReceiver = card.getUser();
         transaction.setAtm(atm);
         transaction.setReceiver(userReceiver);
@@ -35,9 +43,25 @@ public class TransactionService {
     }
 
     public Transaction transferBetweenCards(String senderCardNumber, String receiverCardNumber, double amount, String description) {
-        Transaction transaction = new Transaction();
+        if (amount <= 0) {
+            throw new InvalidAmountException("Amount must be greater than 0");
+        }
+
         Card senderCard = cardRepository.findByCardNumber(senderCardNumber);
+        if (senderCard == null) {
+            throw new ResourceNotFoundException("Sender card not found");
+        }
+
         Card receiverCard = cardRepository.findByCardNumber(receiverCardNumber);
+        if (receiverCard == null) {
+            throw new ResourceNotFoundException("Receiver card not found");
+        }
+
+        if (senderCard.getBalance() < amount) {
+            throw new InvalidAmountException("Insufficient funds");
+        }
+
+        Transaction transaction = new Transaction();
         User userSender = senderCard.getUser();
         User userReceiver = receiverCard.getUser();
         transaction.setSender(userSender);

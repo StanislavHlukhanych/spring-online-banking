@@ -20,6 +20,10 @@ public class CardService {
     }
 
     public Card createCard(User user, String pin) {
+        if (pin.length() != 4) {
+            throw new IllegalArgumentException("Pin must be 4 digits");
+        }
+
         Card card = new Card();
         card.setUser(user);
         card.setCardNumber(generateCardNumber());
@@ -33,6 +37,13 @@ public class CardService {
     }
 
     public void deleteCard(Long id) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Card not found"));
+
+        if(card.getBalance() != 0) {
+            throw new IllegalArgumentException("Card balance must be 0");
+        }
+
         cardRepository.deleteById(id);
     }
 

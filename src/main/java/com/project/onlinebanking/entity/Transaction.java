@@ -15,18 +15,18 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "atm_id")
     private AutomaticTellerMachine atm = null;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "sender_id")
     private User sender = null;
 
     @Column(name = "sender_card_number")
     private String  senderCardNumber = null;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "receiver_id")
     private User receiver;
 

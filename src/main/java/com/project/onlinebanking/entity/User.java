@@ -37,4 +37,18 @@ public class User implements Serializable {
     @Column(nullable = false)
     @UpdateTimestamp
     private Date updated_at;
+
+    public void setUsername(String username) {
+        if (username.length() < 3 || username.length() > 20) {
+            throw new IllegalArgumentException("Username must be between 3 and 20 characters long");
+        }
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        if (!email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+            throw new IllegalArgumentException("Invalid email address");
+        }
+        this.email = email;
+    }
 }

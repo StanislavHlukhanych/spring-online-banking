@@ -16,20 +16,20 @@ public class Card implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(unique = true, nullable = false)
     private String cardNumber;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private Date expiryDate;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String cvv;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String pin;
 
     @Column(nullable = false)
