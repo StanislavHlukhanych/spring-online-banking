@@ -22,16 +22,23 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
         User user = userService.signUp(registerDTO.getUsername(),
                 registerDTO.getEmail(), registerDTO.getPassword());
-        return ResponseEntity.ok(user);
+
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
+                        registerDTO.getPassword()));
+        String jwt = userService.signIn(authentication);
+
+        return ResponseEntity.ok(jwt);
     }
     
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
+                        loginDTO.getPassword()));
         String jwt = userService.signIn(authentication);
         return ResponseEntity.ok(jwt);
     }

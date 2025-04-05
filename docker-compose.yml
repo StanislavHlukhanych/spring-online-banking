@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  online_banking_db:
+    image: postgres:17
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: online_banking_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "127.0.0.1:5433:5432"
+
+  app:
+    build: .
+    container_name: online_banking_app
+    restart: always
+    depends_on:
+      - online_banking_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://online_banking_db:5432/online_banking_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8088:8080"
