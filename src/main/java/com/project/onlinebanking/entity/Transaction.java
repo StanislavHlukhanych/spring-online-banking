@@ -1,5 +1,6 @@
 package com.project.onlinebanking.entity;
 
+import com.project.onlinebanking.model.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,6 +38,8 @@ public class Transaction implements Serializable {
     private Double amount;
 
     private String description;
+
+    private TransactionType transactionType;
 
     @Column(nullable = false)
     @CreationTimestamp

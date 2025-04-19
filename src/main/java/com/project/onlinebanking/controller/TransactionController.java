@@ -1,15 +1,13 @@
 package com.project.onlinebanking.controller;
 
-import com.project.onlinebanking.dto.ReplenishmentOfCardAccountDTO;
-import com.project.onlinebanking.dto.TransferBetweenCardsDTO;
+import com.project.onlinebanking.dto.*;
 import com.project.onlinebanking.entity.Transaction;
 import com.project.onlinebanking.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
@@ -17,21 +15,42 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
     private final TransactionService transactionService;
 
+    @GetMapping("/{cardNumber}")
+    public ResponseEntity<List<TransactionDTO>> getTransactionHistory(@PathVariable String cardNumber) {
+        return ResponseEntity.ok(transactionService.getTransactionsByCardNumber(cardNumber));
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<TransactionInfoDTO> getTransactionInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(transactionService.getTransactionInfoById(id));
+    }
+
+    @PostMapping("/withdrawal")
+    public ResponseEntity<Transaction> withdrawal
+            (@RequestBody ReplenishmentOrWithdrawalDTO replenishmentOrWithdrawalDTO) {
+        Transaction transaction = transactionService.withdrawalFromAtm(
+                replenishmentOrWithdrawalDTO.getAtmNumber(),
+                replenishmentOrWithdrawalDTO.getCardNumber(),
+                replenishmentOrWithdrawalDTO.getAmount()
+        );
+        return ResponseEntity.ok(transaction);
+    }
+
     @PostMapping("/top-up")
     public ResponseEntity<Transaction> topUp
-            (@RequestBody ReplenishmentOfCardAccountDTO replenishmentOfCardAccountDTO) {
+            (@RequestBody ReplenishmentOrWithdrawalDTO replenishmentOrWithdrawalDTO) {
         Transaction transaction = transactionService.replenishmentOfCardAccount(
-                replenishmentOfCardAccountDTO.getAtmNumber(),
-                replenishmentOfCardAccountDTO.getCardNumber(),
-                replenishmentOfCardAccountDTO.getAmount()
+                replenishmentOrWithdrawalDTO.getAtmNumber(),
+                replenishmentOrWithdrawalDTO.getCardNumber(),
+                replenishmentOrWithdrawalDTO.getAmount()
         );
         return ResponseEntity.ok(transaction);
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Transaction> transfer
+    public ResponseEntity<TransactionAfterTransferDTO> transfer
             (@RequestBody TransferBetweenCardsDTO transferBetweenCardsDTO) {
-        Transaction transaction = transactionService.transferBetweenCards(
+        TransactionAfterTransferDTO transaction = transactionService.transferBetweenCards(
                 transferBetweenCardsDTO.getSenderCardNumber(),
                 transferBetweenCardsDTO.getReceiverCardNumber(),
                 transferBetweenCardsDTO.getAmount(),

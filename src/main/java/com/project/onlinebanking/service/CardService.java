@@ -1,11 +1,15 @@
 package com.project.onlinebanking.service;
 
+import com.project.onlinebanking.dto.CardDTO;
+import com.project.onlinebanking.dto.CardInfoDTO;
 import com.project.onlinebanking.entity.Card;
 import com.project.onlinebanking.entity.User;
+import com.project.onlinebanking.exception.DeleteCardException;
 import com.project.onlinebanking.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -15,8 +19,24 @@ import java.util.Random;
 public class CardService {
     private final CardRepository cardRepository;
 
-    public List<Card> getCards(User user) {
-        return cardRepository.findAllByUser(user);
+    public List<CardDTO> getCards(User user) {
+        List<Card> cards = cardRepository.findAllByUser(user);
+
+        return cards.stream()
+                .map(card -> new CardDTO(card.getCardNumber(), card.getBalance()))
+                .toList();
+    }
+
+    public CardInfoDTO getCardInfoByCardNumber(String cardNumber) {
+        Card card = cardRepository.findByCardNumber(cardNumber)
+                .orElseThrow(() -> new IllegalArgumentException("Card not found"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.yyyy");
+        String formattedDate = card.getExpiryDate().toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .format(formatter);
+
+        return new CardInfoDTO(formattedDate, card.getCvv());
     }
 
     public Card createCard(User user, String pin) {
@@ -38,13 +58,24 @@ public class CardService {
 
     public void deleteCard(Long id) {
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Card not found"));
+                .orElseThrow(() -> new DeleteCardException("Card not found"));
 
         if(card.getBalance() != 0) {
-            throw new IllegalArgumentException("Card balance must be 0");
+            throw new DeleteCardException("Card balance must be 0");
         }
 
         cardRepository.deleteById(id);
+    }
+
+    public void deleteCardByNumber(String cardNumber) {
+        Card card = cardRepository.findByCardNumber(cardNumber)
+                .orElseThrow(() -> new DeleteCardException("Card not found"));
+
+        if(card.getBalance() != 0) {
+            throw new DeleteCardException("Card balance must be 0");
+        }
+
+        cardRepository.deleteById(card.getId());
     }
 
     private String generateCvv() {
