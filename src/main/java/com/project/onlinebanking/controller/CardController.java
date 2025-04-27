@@ -3,7 +3,6 @@ package com.project.onlinebanking.controller;
 import com.project.onlinebanking.dto.CardDTO;
 import com.project.onlinebanking.dto.CardInfoDTO;
 import com.project.onlinebanking.dto.CreateCardDTO;
-import com.project.onlinebanking.entity.Card;
 import com.project.onlinebanking.entity.User;
 import com.project.onlinebanking.service.CardService;
 import com.project.onlinebanking.service.UserService;
