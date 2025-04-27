@@ -39,7 +39,7 @@ public class CardService {
         return new CardInfoDTO(formattedDate, card.getCvv());
     }
 
-    public Card createCard(User user, String pin) {
+    public void createCard(User user, String pin) {
         if (pin.length() != 4) {
             throw new IllegalArgumentException("Pin must be 4 digits");
         }
@@ -53,7 +53,7 @@ public class CardService {
         card.setCvv(generateCvv());
         card.setPin(pin);
 
-        return cardRepository.save(card);
+        cardRepository.save(card);
     }
 
     public void deleteCard(Long id) {

@@ -1,4 +1,4 @@
-package com.project.onlinebanking.model;
+package com.project.onlinebanking.enumeration;
 
 public enum TransactionType {
     SEND,

@@ -7,7 +7,7 @@ import com.project.onlinebanking.entity.*;
 import com.project.onlinebanking.exception.InvalidAmountException;
 import com.project.onlinebanking.exception.InvalidCardException;
 import com.project.onlinebanking.exception.ResourceNotFoundException;
-import com.project.onlinebanking.model.TransactionType;
+import com.project.onlinebanking.enumeration.TransactionType;
 import com.project.onlinebanking.repository.AutomaticTellerMachineRepository;
 import com.project.onlinebanking.repository.CardRepository;
 import com.project.onlinebanking.repository.TransactionRepository;

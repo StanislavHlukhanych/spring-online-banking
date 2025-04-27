@@ -44,10 +44,10 @@ public class CardController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Card> createCard(@RequestBody CreateCardDTO createCardDTO, Principal principal) {
+    public ResponseEntity<String> createCard(@RequestBody CreateCardDTO createCardDTO, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
-        Card card = cardService.createCard(user, createCardDTO.getPin());
-        return ResponseEntity.ok(card);
+        cardService.createCard(user, createCardDTO.getPin());
+        return ResponseEntity.ok("Card created");
     }
 
     @DeleteMapping("/delete/{id}")

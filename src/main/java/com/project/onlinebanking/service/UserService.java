@@ -3,7 +3,7 @@ package com.project.onlinebanking.service;
 import com.project.onlinebanking.config.JwtUtil;
 import com.project.onlinebanking.dto.UserDTO;
 import com.project.onlinebanking.exception.UserAlreadyExist;
-import com.project.onlinebanking.model.Role;
+import com.project.onlinebanking.enumeration.Role;
 import com.project.onlinebanking.entity.User;
 import com.project.onlinebanking.impl.UserDetailsImpl;
 import com.project.onlinebanking.repository.UserRepository;
