@@ -14,7 +14,7 @@ It implements core functionality for user management, bank cards, and transactio
 
 ## Technologies Used
 
-- Java 23
+- Java 17
 - Spring Boot
 - Spring Security (JWT)
 - Spring Data JPA
@@ -25,7 +25,7 @@ It implements core functionality for user management, bank cards, and transactio
 
 ### Prerequisites
 
-- Java 17+
+- Java 17
 - Maven 3.8+
 - An IDE (e.g., IntelliJ IDEA, VS Code, Eclipse)
 
@@ -40,11 +40,27 @@ cd spring-online-banking
 
 Update the `src/main/resources/application.properties` file with your database credentials:
 
-```properties
+```properties/yml
 spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
+```
+
+### OR
+
+### Create .env
+
+Create a `.env` file in the root directory of the project and add your database credentials:
+
+```.env
+LOCAL_SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/your_database
+LOCAL_SPRING_DATASOURCE_USERNAME=your_username
+LOCAL_SPRING_DATASOURCE_PASSWORD=your_password
+
+DOCKER_SPRING_DATASOURCE_URL=jdbc:postgresql://online_banking_db:5432/your_database
+DOCKER_SPRING_DATASOURCE_USERNAME=your_username
+DOCKER_SPRING_DATASOURCE_PASSWORD=your_password
 ```
 
 ### Build and Run

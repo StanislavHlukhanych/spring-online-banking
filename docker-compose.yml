@@ -7,20 +7,19 @@ services:
     restart: always
     environment:
       POSTGRES_DB: online_banking_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${DOCKER_SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DOCKER_SPRING_DATASOURCE_PASSWORD}
     ports:
       - "127.0.0.1:5433:5432"
 
   app:
     build: .
     container_name: online_banking_app
-    restart: always
     depends_on:
       - online_banking_db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://online_banking_db:5432/online_banking_db
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_URL: ${DOCKER_SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${DOCKER_SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DOCKER_SPRING_DATASOURCE_PASSWORD}
     ports:
       - "8088:8080"

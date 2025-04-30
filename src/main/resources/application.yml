@@ -1,10 +1,13 @@
 #spring.application.name=online-banking
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/banking_db
-    username: postgres
-    password: 1111
+    url: ${LOCAL_SPRING_DATASOURCE_URL}
+    username: ${LOCAL_SPRING_DATASOURCE_USERNAME}
+    password: ${LOCAL_SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
