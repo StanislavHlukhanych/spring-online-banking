@@ -39,12 +39,14 @@ public class TransactionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
 
         return new TransactionInfoDTO(
+                transaction.getSenderCardNumber(),
+                transaction.getReceiverCardNumber(),
                 formatDate(transaction),
                 transaction.getDescription()
         );
     }
 
-    public Transaction replenishmentOfCardAccount(String atmNumber, String cardNumber, double amount) {
+    public String replenishmentOfCardAccount(String atmNumber, String cardNumber, double amount) {
         AutomaticTellerMachine atm = automaticTellerMachineRepository.findByNumber(atmNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("ATM not found"));
 
@@ -67,10 +69,12 @@ public class TransactionService {
         double updateBalance = card.getBalance() + amount;
         card.setBalance(updateBalance);
 
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
+
+        return "Successfully replenished card account " + amount;
     }
 
-    public Transaction withdrawalFromAtm(String atmNumber, String cardNumber, double amount) {
+    public String withdrawalFromAtm(String atmNumber, String cardNumber, double amount) {
         AutomaticTellerMachine atm = automaticTellerMachineRepository.findByNumber(atmNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("ATM not found"));
 
@@ -97,7 +101,9 @@ public class TransactionService {
         double updateBalance = card.getBalance() - amount;
         card.setBalance(updateBalance);
 
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
+
+        return "Successfully withdrew from ATM " + amount;
     }
 
     public TransactionAfterTransferDTO transferBetweenCards(String senderCardNumber, String receiverCardNumber, double amount, String description) {

@@ -1,7 +1,6 @@
 package com.project.onlinebanking.controller;
 
 import com.project.onlinebanking.dto.*;
-import com.project.onlinebanking.entity.Transaction;
 import com.project.onlinebanking.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,25 +25,25 @@ public class TransactionController {
     }
 
     @PostMapping("/withdrawal")
-    public ResponseEntity<Transaction> withdrawal
+    public ResponseEntity<String> withdrawal
             (@RequestBody ReplenishmentOrWithdrawalDTO replenishmentOrWithdrawalDTO) {
-        Transaction transaction = transactionService.withdrawalFromAtm(
+        String response = transactionService.withdrawalFromAtm(
                 replenishmentOrWithdrawalDTO.getAtmNumber(),
                 replenishmentOrWithdrawalDTO.getCardNumber(),
                 replenishmentOrWithdrawalDTO.getAmount()
         );
-        return ResponseEntity.ok(transaction);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/top-up")
-    public ResponseEntity<Transaction> topUp
+    public ResponseEntity<String> topUp
             (@RequestBody ReplenishmentOrWithdrawalDTO replenishmentOrWithdrawalDTO) {
-        Transaction transaction = transactionService.replenishmentOfCardAccount(
+        String response = transactionService.replenishmentOfCardAccount(
                 replenishmentOrWithdrawalDTO.getAtmNumber(),
                 replenishmentOrWithdrawalDTO.getCardNumber(),
                 replenishmentOrWithdrawalDTO.getAmount()
         );
-        return ResponseEntity.ok(transaction);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/transfer")
