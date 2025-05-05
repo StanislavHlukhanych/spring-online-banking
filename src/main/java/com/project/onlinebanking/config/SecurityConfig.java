@@ -11,7 +11,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +34,8 @@ public class SecurityConfig {
                         }))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/auth/register",
-                                "/transaction/top-up", "/transaction/withdrawal", "/atm/**").permitAll()
+                                "/transaction/top-up", "/transaction/withdrawal", "/atm/**",
+                                "/ping").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationConfig)
