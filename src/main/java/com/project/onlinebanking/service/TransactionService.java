@@ -29,6 +29,7 @@ public class TransactionService {
         List<Transaction> transactions = transactionRepository.findAllBySenderCardNumber(cardNumber);
         transactions.addAll(transactionRepository.findAllByReceiverCardNumber(cardNumber));
         transactions.sort(Comparator.comparing(Transaction::getTimestamp).reversed());
+
         return transactions.stream()
                 .map(transaction -> mapToTransactionDTO(transaction, cardNumber))
                 .toList();
@@ -103,7 +104,7 @@ public class TransactionService {
 
         transactionRepository.save(transaction);
 
-        return "Successfully withdrew from ATM " + amount;
+        return "Successfully withdrew from ATM " + formatAmount(amount);
     }
 
     public TransactionAfterTransferDTO transferBetweenCards(String senderCardNumber, String receiverCardNumber, double amount, String description) {
@@ -145,7 +146,7 @@ public class TransactionService {
 
         return new TransactionAfterTransferDTO(
                 userReceiver.getUsername(),
-                "-" + amount,
+                "-" + formatAmount(amount),
                 formatDate(transaction),
                 description
         );
@@ -185,7 +186,7 @@ public class TransactionService {
         };
     }
 
-    public static String formatAmount(double amount) {
+    private static String formatAmount(double amount) {
         return String.format("%.2f", amount);
     }
 }
