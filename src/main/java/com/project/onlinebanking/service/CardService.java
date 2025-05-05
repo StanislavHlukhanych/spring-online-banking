@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +22,7 @@ public class CardService {
 
     public List<CardDTO> getCards(User user) {
         List<Card> cards = cardRepository.findAllByUser(user);
+        cards.sort(Comparator.comparing(Card::getUpdated_at).reversed());
 
         return cards.stream()
                 .map(card -> new CardDTO(card.getCardNumber(), card.getBalance()))

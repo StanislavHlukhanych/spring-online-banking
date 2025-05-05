@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class CardDTO {
     String cardNumber;
-    Double balance;
+    String balance;
 
     public CardDTO(String cardNumber, Double balance) {
         this.cardNumber = cardNumber;
-        this.balance = balance;
+        this.balance = String.format("%.2f", balance);
     }
 }

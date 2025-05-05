@@ -71,7 +71,7 @@ public class TransactionService {
 
         transactionRepository.save(transaction);
 
-        return "Successfully replenished card account " + amount;
+        return "Successfully replenished card account " + String.format("%.2f", amount);
     }
 
     public String withdrawalFromAtm(String atmNumber, String cardNumber, double amount) {
@@ -163,12 +163,12 @@ public class TransactionService {
             case REPLENISHMENT_FROM_ATM -> new TransactionDTO(
                     transaction.getId(),
                     "ATM " + transaction.getAtm().getNumber(),
-                    "+" + transaction.getAmount().toString()
+                    "+" + formatAmount(transaction.getAmount())
             );
             case WITHDRAWAL_FROM_ATM -> new TransactionDTO(
                     transaction.getId(),
                     "ATM " + transaction.getAtm().getNumber(),
-                    "-" + transaction.getAmount().toString()
+                    "-" + formatAmount(transaction.getAmount())
             );
             default -> {
                 boolean isReceiver = transaction.getReceiverCardNumber().equals(cardNumber);
@@ -179,9 +179,13 @@ public class TransactionService {
                 yield new TransactionDTO(
                         transaction.getId(),
                         username,
-                        sign + transaction.getAmount().toString()
+                        sign + formatAmount(transaction.getAmount())
                 );
             }
         };
+    }
+
+    public static String formatAmount(double amount) {
+        return String.format("%.2f", amount);
     }
 }
