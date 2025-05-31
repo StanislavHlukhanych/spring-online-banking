@@ -28,8 +28,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
-    @ExceptionHandler(value = {UserAlreadyExist.class})
-    public ResponseEntity<String> handleUserAlreadyExist(UserAlreadyExist e) {
+    @ExceptionHandler(value = {UserAlreadyExistException.class})
+    public ResponseEntity<String> handleUserAlreadyExist(UserAlreadyExistException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
@@ -40,6 +40,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {InvalidCardException.class})
     public ResponseEntity<String> handleInvalidCardException(InvalidCardException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(value = {ImageAlreadyExistException.class})
+    public ResponseEntity<String> handleImageAlreadyExist(ImageAlreadyExistException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

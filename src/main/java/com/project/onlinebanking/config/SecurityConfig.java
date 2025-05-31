@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/auth/register",
                                 "/transaction/top-up", "/transaction/withdrawal", "/atm/**",
-                                "/ping").permitAll()
+                                "/ping", "/image/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationConfig)

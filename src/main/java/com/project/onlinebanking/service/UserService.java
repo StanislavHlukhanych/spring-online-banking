@@ -2,7 +2,7 @@ package com.project.onlinebanking.service;
 
 import com.project.onlinebanking.config.JwtUtil;
 import com.project.onlinebanking.dto.UserDTO;
-import com.project.onlinebanking.exception.UserAlreadyExist;
+import com.project.onlinebanking.exception.UserAlreadyExistException;
 import com.project.onlinebanking.enumeration.Role;
 import com.project.onlinebanking.entity.User;
 import com.project.onlinebanking.impl.UserDetailsImpl;
@@ -36,11 +36,11 @@ public class UserService implements UserDetailsService {
 
     public User signUp(String username, String email, String password) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new UserAlreadyExist("Email already exists");
+            throw new UserAlreadyExistException("Email already exists");
         }
 
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new UserAlreadyExist("Username already exists");
+            throw new UserAlreadyExistException("Username already exists");
         }
 
         if (password.length() < 8) {

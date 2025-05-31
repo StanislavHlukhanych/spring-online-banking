@@ -35,6 +35,10 @@ public class Card implements Serializable {
     @Column(nullable = false)
     private Double balance = 0.0;
 
+    @ManyToOne()
+    @JoinColumn(name = "card_image_id")
+    private CardImage cardImage;
+
     @Column(nullable = false)
     @CreationTimestamp
     private Date created_at;
