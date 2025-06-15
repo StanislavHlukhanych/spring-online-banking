@@ -88,6 +88,5 @@ http://localhost:8080
 
 ## License
 
-This project is open-source.  
-(Consider adding a specific license like MIT or Apache 2.0.)
+This project is open-source.
 
